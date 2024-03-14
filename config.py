@@ -6,3 +6,13 @@ LOAD_ARGS = dict(
     groupby="solar_day",
     chunks=dict(x=2048, y=2048),
 )
+
+
+def switch_usgs_urls(items):
+    for item in items:
+        for asset in item.assets.values():
+            try:
+                s3_href = asset.extra_fields["alternate"]["s3"]["href"]
+                asset.href = s3_href
+            except KeyError:
+                pass
